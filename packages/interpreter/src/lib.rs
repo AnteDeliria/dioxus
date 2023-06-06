@@ -19,5 +19,6 @@ pub mod minimal_bindings {
     #[wasm_bindgen(module = "/src/common.js")]
     extern "C" {
         pub fn setAttributeInner(node: JsValue, name: &str, value: JsValue, ns: Option<&str>);
+        pub fn handleMedia(node: JsValue, source: JsValue);
     }
 }

@@ -28,6 +28,11 @@ const bool_attrs = {
 };
 
 export function setAttributeInner(node, field, value, ns) {
+  console.log(node);
+  console.log(field);
+  console.log(value);
+  console.log(ns);
+
   const name = field;
   if (ns === "style") {
     // ????? why do we need to do this
@@ -65,4 +70,9 @@ export function setAttributeInner(node, field, value, ns) {
         }
     }
   }
+}
+
+export function handleMedia(node, source) {
+  console.log(node);
+  console.log(source);
 }

@@ -782,7 +782,7 @@ builder_constructors! {
         decoding: ImageDecoding DEFAULT,
         height: usize DEFAULT,
         ismap: Bool DEFAULT,
-        src: Uri DEFAULT,
+        src: MediaSource DEFAULT,
         srcset: String DEFAULT, // FIXME this is much more complicated
         usemap: String DEFAULT, // FIXME should be a fragment starting with '#'
         width: usize DEFAULT,

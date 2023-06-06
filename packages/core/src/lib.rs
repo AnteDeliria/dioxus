@@ -18,6 +18,7 @@ mod scheduler;
 mod scope_arena;
 mod scopes;
 mod virtual_dom;
+mod media;
 
 pub(crate) mod innerlude {
     pub use crate::arena::*;
@@ -33,6 +34,7 @@ pub(crate) mod innerlude {
     pub use crate::scheduler::*;
     pub use crate::scopes::*;
     pub use crate::virtual_dom::*;
+    pub use crate::media::*;
 
     /// An [`Element`] is a possibly-none [`VNode`] created by calling `render` on [`Scope`] or [`ScopeState`].
     ///
@@ -84,7 +86,7 @@ pub mod prelude {
     pub use crate::innerlude::{
         fc_to_builder, AnyValue, Component, Element, Event, EventHandler, Fragment,
         IntoAttributeValue, LazyNodes, Properties, Scope, ScopeId, ScopeState, Scoped, TaskId,
-        Template, TemplateAttribute, TemplateNode, Throw, VNode, VirtualDom,
+        Template, TemplateAttribute, TemplateNode, Throw, VNode, VirtualDom, Media, MediaSource,
     };
 }
 

@@ -8,7 +8,8 @@
 //! - Partial delegation?>
 
 use dioxus_core::{
-    BorrowedAttributeValue, ElementId, Mutation, Template, TemplateAttribute, TemplateNode,
+    prelude::Media, BorrowedAttributeValue, ElementId, Mutation, Template, TemplateAttribute,
+    TemplateNode,
 };
 use dioxus_html::{event_bubbles, CompositionData, FileEngine, FormData, MountedData};
 use dioxus_interpreter_js::{get_node, minimal_bindings, save_template, Channel};
@@ -206,6 +207,24 @@ impl WebsysDom {
                         if *b { "true" } else { "false" },
                         ns.unwrap_or_default(),
                     ),
+
+                    BorrowedAttributeValue::Any(value) => {
+                        if let Some(value) = value.as_any().downcast_ref::<Media>() {
+                            let node = dioxus_interpreter_js::get_node(id.0 as u32);
+
+                            use dioxus_core::prelude::MediaSource;
+                            match value.source() {
+                                MediaSource::Url(v) => minimal_bindings::handleMedia(node.into(), v.into()),
+                                MediaSource::Raw(v) => {
+                                    let arr = js_sys::Array::new();
+                                    for (i, val) in v.iter().enumerate() {
+                                        arr.set(i as u32, val.to_owned().into());
+                                    }
+                                    minimal_bindings::handleMedia(node.into(), arr.into());
+                                }
+                            }
+                        }
+                    }
                     BorrowedAttributeValue::None => {
                         i.remove_attribute(id.0 as u32, name, ns.unwrap_or_default())
                     }
