@@ -210,17 +210,17 @@ impl WebsysDom {
 
                     BorrowedAttributeValue::Any(value) => {
                         if let Some(value) = value.as_any().downcast_ref::<Media>() {
-                            let node = dioxus_interpreter_js::get_node(id.0 as u32);
-
                             use dioxus_core::prelude::MediaSource;
                             match value.source() {
-                                MediaSource::Url(v) => minimal_bindings::handleMedia(node.into(), v.into()),
+                                MediaSource::Url(v) => i.handle_media_source_url(id.0 as u32, v),
                                 MediaSource::Raw(v) => {
-                                    let arr = js_sys::Array::new();
-                                    for (i, val) in v.iter().enumerate() {
-                                        arr.set(i as u32, val.to_owned().into());
-                                    }
-                                    minimal_bindings::handleMedia(node.into(), arr.into());
+                                    let bytes = &v.1[..];
+                                    i.handle_media_source_raw(
+                                        id.0 as u32,
+                                        &v.0,
+                                        bytes.as_ptr() as u32,
+                                        bytes.len() as u32,
+                                    );
                                 }
                             }
                         }

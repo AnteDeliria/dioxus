@@ -164,6 +164,25 @@ mod js {
         selected: true,
         truespeed: true,
       };
+
+    function HandleMediaSourceUrl(node, url) {
+        node.setAttribute("src", url);
+    }
+
+    function HandleMediaSourceRaw(node, mime_type, data_ptr, data_len) {
+        let raw = [];
+
+        let ptr_end = data_ptr + data_len;
+        for (; data_ptr < ptr_end; data_ptr++) {
+            let data = m.getUint8(data_ptr);
+            raw.push(data);
+        }
+        let byte_array = new Uint8Array(raw);
+
+        const blob = new Blob([byte_array], { type: mime_type });
+        const url = URL.createObjectURL(blob);
+        node.setAttribute("src", url);   
+    }
     "#;
 
     extern "C" {
@@ -265,5 +284,11 @@ mod js {
     }
     fn load_template(tmpl_id: u32, index: u32, id: u32) {
         "{node = templates[$tmpl_id$][$index$].cloneNode(true); nodes[$id$] = node; stack.push(node);}"
+    }
+    fn handle_media_source_url(id: u32, url: &str) {
+        "{node = nodes[$id$]; HandleMediaSourceUrl(node, $url$);}"
+    }
+    fn handle_media_source_raw(id: u32, mime_type: &str, data_ptr: u32, data_len: u32) {
+        "{node = nodes[$id$]; HandleMediaSourceRaw(node, $mime_type$, $data_ptr$, $data_len$);}"
     }
 }

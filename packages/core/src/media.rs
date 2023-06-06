@@ -29,5 +29,5 @@ pub enum MediaSource {
     /// Import the media via URL
     Url(String),
     /// Raw data to be used as a media's source
-    Raw(Vec<u8>),
+    Raw((String, Vec<u8>)),
 }
