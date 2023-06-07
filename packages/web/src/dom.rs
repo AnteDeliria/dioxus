@@ -221,7 +221,16 @@ impl WebsysDom {
                                         bytes.as_ptr() as u32,
                                         bytes.len() as u32,
                                     );
+                                },
+                                #[cfg(target_family = "wasm")]
+                                MediaSource::Stream(stream) => {
+                                    // Get element
+                                    let node = dioxus_interpreter_js::get_node(id.0 as u32);
+                                    // Setup MediaStream
+                                    minimal_bindings::handleMediaSourceStream(node, stream.clone());
                                 }
+                                #[cfg(not(target_family = "wasm"))]
+                                MediaSource::Stream(_) => panic!("not running in wasm context"),
                             }
                         }
                     }

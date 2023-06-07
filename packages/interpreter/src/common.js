@@ -66,3 +66,8 @@ export function setAttributeInner(node, field, value, ns) {
     }
   }
 }
+
+export function handleMediaSourceStream(node, stream) {
+  let url = URL.createObjectURL(stream);
+  node.setAttribute("src", url);
+}

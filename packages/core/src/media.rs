@@ -30,4 +30,14 @@ pub enum MediaSource {
     Url(String),
     /// Raw data to be used as a media's source
     Raw((String, Vec<u8>)),
+    /// A stream of raw data
+    #[cfg(not(target_family = "wasm"))]
+    Stream(MediaStream),
+
+    /// A wrapper around the web MediaStream
+    #[cfg(target_family = "wasm")]
+    Stream(web_sys::MediaStream),
 }
+
+#[derive(Debug, PartialEq)]
+pub struct MediaStream {}
