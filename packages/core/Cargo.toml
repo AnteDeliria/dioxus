@@ -41,6 +41,8 @@ serde = { version = "1", features = ["derive"], optional = true }
 
 bumpslab = { version = "0.2.0" }
 
+tokio = { workspace = true, features = ["sync", "time"] }
+
 [dev-dependencies]
 tokio = { workspace = true, features = ["full"] }
 dioxus = { workspace = true }
@@ -50,3 +52,4 @@ rand = "0.8.5"
 [features]
 default = []
 serialize = ["serde"]
+debug-info = []

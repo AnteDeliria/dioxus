@@ -5,6 +5,7 @@
 use crate::{
     any_props::VProps,
     arena::{ElementId, ElementRef},
+    debug::{DebugInfo, DebugProvider},
     innerlude::{DirtyScope, ErrorBoundary, Mutations, Scheduler, SchedulerMsg, ScopeSlab},
     mutations::Mutation,
     nodes::RenderReturn,
@@ -16,7 +17,15 @@ use crate::{
 use futures_util::{pin_mut, StreamExt};
 use rustc_hash::FxHashMap;
 use slab::Slab;
-use std::{any::Any, borrow::BorrowMut, cell::Cell, collections::BTreeSet, future::Future, rc::Rc};
+use std::{
+    any::Any,
+    borrow::BorrowMut,
+    cell::{Cell, RefCell},
+    collections::BTreeSet,
+    future::Future,
+    rc::Rc,
+};
+use tokio::sync::watch;
 
 /// A virtual node system that progresses user events and diffs UI trees.
 ///
@@ -195,6 +204,9 @@ pub struct VirtualDom {
     pub(crate) rx: futures_channel::mpsc::UnboundedReceiver<SchedulerMsg>,
 
     pub(crate) mutations: Mutations<'static>,
+
+    pub(crate) debug_info: DebugInfo,
+    pub(crate) debug_sender: watch::Sender<DebugInfo>,
 }
 
 impl VirtualDom {
@@ -254,6 +266,8 @@ impl VirtualDom {
     /// ```
     pub fn new_with_props<P: 'static>(root: fn(Scope<P>) -> Element, root_props: P) -> Self {
         let (tx, rx) = futures_channel::mpsc::unbounded();
+        let (debug_tx, debug_rx) = watch::channel(DebugInfo::default());
+
         let mut dom = Self {
             rx,
             scheduler: Scheduler::new(tx),
@@ -265,6 +279,8 @@ impl VirtualDom {
             collected_leaves: Vec::new(),
             finished_fibers: Vec::new(),
             mutations: Mutations::default(),
+            debug_info: DebugInfo::default(),
+            debug_sender: debug_tx,
         };
 
         let root = dom.new_scope(
@@ -283,6 +299,10 @@ impl VirtualDom {
 
         // the root element is always given element ID 0 since it's the container for the entire tree
         dom.elements.insert(ElementRef::none());
+
+        // debug provider
+        let cx = dom.base_scope();
+        cx.provide_context(DebugProvider { rx: debug_rx });
 
         dom
     }
@@ -477,6 +497,17 @@ impl VirtualDom {
     /// let sender = dom.get_scheduler_channel();
     /// ```
     pub async fn wait_for_work(&mut self) {
+        // Update debug info
+        {
+            let data = self.debug_sender.borrow().clone();
+
+            self.debug_info.looped += 1;
+
+            if data != self.debug_info {
+                _ = self.debug_sender.send(self.debug_info.clone());
+            }
+        }
+
         let mut some_msg = None;
 
         loop {
