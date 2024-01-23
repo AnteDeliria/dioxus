@@ -47,7 +47,8 @@ members = [
     # Playwright tests
     "playwright-tests/liveview",
     "playwright-tests/web",
-    "playwright-tests/fullstack",
+    "playwright-tests/fullstack", 
+    "packages/cli-conn-manager",
 ]
 exclude = ["examples/mobile_demo"]
 
