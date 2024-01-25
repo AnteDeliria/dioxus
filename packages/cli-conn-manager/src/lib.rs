@@ -2,22 +2,20 @@ use axum::extract::ws::{Message as WsMessage, WebSocket};
 use futures_util::{
     sink::SinkExt,
     stream::{SplitSink, SplitStream, StreamExt},
-    TryStreamExt,
 };
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     sync::{Arc, Mutex},
-    thread,
 };
-use tokio::sync::mpsc::{Receiver, Sender};
+use tokio::sync::mpsc::{self, Receiver, Sender};
 
-pub struct Manager<'a> {
+pub struct Manager {
     socket_sender: SplitSink<WebSocket, WsMessage>,
-    channels: Arc<Mutex<HashMap<&'a str, Sender<Message<'a>>>>>,
+    channels: Arc<Mutex<HashMap<String, Sender<Message>>>>,
 }
 
-impl Manager<'_> {
+impl Manager {
     pub fn new(socket: WebSocket) -> Self {
         let (socket_sender, socket_receiver) = socket.split();
 
@@ -38,15 +36,23 @@ impl Manager<'_> {
             let mut stop = false;
             loop {
                 while let Some(msg) = receiver.next().await {
-                    let msg = if let Ok(msg) = msg {
-                        msg
-                    } else {
-                        // Client disconnect
-                        stop = true;
-                        break;
+                    let msg = match msg {
+                        Ok(m) => m,
+                        Err(_) => {
+                            // Client disconnected.
+                            stop = true;
+                            break;
+                        }
                     };
 
-                    // deserialize msg and send through proper channel
+                    let msg = msg.into_text().unwrap();
+                    let data = serde_json::from_str::<Message>(&msg).unwrap();
+
+                    let chs = channels.lock().unwrap();
+
+                    if let Some(sender) = chs.get(&data.channel) {
+                        _ = sender.try_send(data);
+                    }
                 }
 
                 if stop {
@@ -56,7 +62,7 @@ impl Manager<'_> {
         });
     }
 
-    pub async fn send(&mut self, channel: &str, data: String) -> Result<(), Error> {
+    pub async fn send(&mut self, channel: String, data: String) -> Result<(), Error> {
         let msg = Message { channel, data };
 
         let data = match serde_json::to_string(&msg) {
@@ -72,14 +78,18 @@ impl Manager<'_> {
         }
     }
 
-    pub fn recv(&mut self, channel: &str) -> Receiver<String> {
-        todo!()
+    pub fn recv(&mut self, channel: String) -> Receiver<Message> {
+        let (sender, receiver) = mpsc::channel(10);
+
+        let mut chs = self.channels.lock().unwrap();
+        chs.insert(channel, sender);
+        receiver
     }
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Message<'a> {
-    channel: &'a str,
+pub struct Message {
+    channel: String,
     data: String,
 }
 
