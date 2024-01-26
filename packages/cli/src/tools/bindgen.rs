@@ -8,15 +8,15 @@ const TOOL_NAME: &str = "wasm-bindgen";
 
 // Windows
 #[cfg(target_os = "windows")]
-const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.87/wasm-bindgen-0.2.87-x86_64-pc-windows-msvc.tar.gz";
+const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/{VERSION}/wasm-bindgen-{VERSION}-x86_64-pc-windows-msvc.tar.gz";
 // MacOS
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
-const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.87/wasm-bindgen-0.2.87-aarch64-apple-darwin.tar.gz";
+const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/{VERSION}/wasm-bindgen-{VERSION}-aarch64-apple-darwin.tar.gz";
 #[cfg(all(target_os = "macos", target_arch = "x86_64"))]
-const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.87/wasm-bindgen-0.2.87-x86_64-apple-darwin.tar.gz";
+const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/{VERSION}/wasm-bindgen-{VERSION}-x86_64-apple-darwin.tar.gz";
 // Linux
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
-const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.87/wasm-bindgen-0.2.87-x86_64-unknown-linux-musl.tar.gz";
+const INSTALL_URL: &str = "https://github.com/rustwasm/wasm-bindgen/releases/download/{VERSION}/wasm-bindgen-{VERSION}-x86_64-unknown-linux-musl.tar.gz";
 
 pub struct Bindgen {
     exec_path: PathBuf,
@@ -27,10 +27,10 @@ pub struct Bindgen {
 
 impl Bindgen {
     /// Get wasm-bindgen tool.
-    pub fn get() -> Result<Self> {
+    pub fn get(version: String) -> Result<Self> {
         // Check if exists
         let tool_storage = ToolStorage::get()?;
-        let tool_path = tool_storage.get_tool_by_name(TOOL_NAME.to_string());
+        let tool_path = tool_storage.get_tool_by_name(format!("{}-{}", TOOL_NAME, version));
 
         // If exists return it
         if let Some(tool_path) = tool_path {
@@ -43,7 +43,7 @@ impl Bindgen {
         }
 
         // Otherwise try installing it
-        let exec_path = Self::install()?;
+        let exec_path = Self::install(version)?;
 
         // Then return it
         Ok(Self {
@@ -105,8 +105,11 @@ impl Bindgen {
     }
 
     /// Install the latest version of wasm-bindgen CLI.
-    fn install() -> Result<PathBuf> {
-        let res = reqwest::blocking::get(INSTALL_URL)
+    fn install(version: String) -> Result<PathBuf> {
+        let install_url = INSTALL_URL.replace("{VERSION}", &version);
+        let final_name = format!("{}-{}", TOOL_NAME, version);
+
+        let res = reqwest::blocking::get(install_url)
             .map_err(|_| Error::CustomError("Failed to install wasm-bindgen".to_string()))?;
 
         let bytes = res
@@ -114,7 +117,7 @@ impl Bindgen {
             .map_err(|_| Error::CustomError("Failed to install wasm-bindgen".to_string()))?;
 
         let temp_storage = TempStorage::get()?;
-        let path = temp_storage.path().join(TOOL_NAME);
+        let path = temp_storage.path().join(final_name.clone());
 
         let tar = GzDecoder::new(bytes.as_ref());
         let mut archive = Archive::new(tar);
@@ -133,6 +136,6 @@ impl Bindgen {
         let bindgen_path = path.join(TOOL_NAME);
 
         let mut tool_storage = ToolStorage::get()?;
-        tool_storage.install_tool(TOOL_NAME.to_string(), bindgen_path)
+        tool_storage.install_tool(final_name, bindgen_path)
     }
 }

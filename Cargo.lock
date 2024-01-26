@@ -2504,6 +2504,7 @@ dependencies = [
 name = "dioxus-cli-config"
 version = "0.4.1"
 dependencies = [
+ "cargo-lock 9.0.0",
  "cargo_toml",
  "clap 4.4.15",
  "once_cell",

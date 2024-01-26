@@ -1,6 +1,7 @@
 use crate::BundleConfig;
 use crate::CargoError;
 use core::fmt::{Display, Formatter};
+use cargo_lock::Lockfile;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
@@ -358,6 +359,7 @@ pub struct CrateConfig {
     pub features: Option<Vec<String>>,
     pub target: Option<String>,
     pub cargo_args: Vec<String>,
+    pub bindgen_version: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -379,7 +381,7 @@ impl CrateConfig {
         } else if let Some(bin) = bin {
             crate_root.join(bin)
         } else {
-            crate_root
+            crate_root.clone()
         };
 
         let meta = crate::Metadata::get()?;
@@ -413,6 +415,21 @@ impl CrateConfig {
             };
         }
 
+        // Get bindgen version
+        // Default version will be 0.2.90 if can't find.
+        let mut bindgen_version = String::from("0.2.90");
+
+        let version = get_bindgen_version_from_lockfile(crate_dir.clone());
+        if let Some(version) = version {
+            bindgen_version = version;
+        } else {
+            // Couldn't find it. Lets try crate root.
+            match get_bindgen_version_from_lockfile(crate_root) {
+                Some(v) => bindgen_version = v,
+                None => println!("Couldn't find bindgen version. Using default of {bindgen_version}")
+            }
+        }
+
         let executable = ExecutableType::Binary(output_filename);
 
         let release = false;
@@ -441,6 +458,8 @@ impl CrateConfig {
             verbose,
             target,
             cargo_args,
+            #[cfg(feature = "cli")]
+            bindgen_version,
         })
     }
 
@@ -492,4 +511,17 @@ impl CrateConfig {
 
 fn true_bool() -> bool {
     true
+}
+
+fn get_bindgen_version_from_lockfile(path: PathBuf) -> Option<String> {
+    let lock_file = path.join("Cargo.lock");
+    let lock_file = match Lockfile::load(lock_file) {
+        Ok(l) => l,
+        Err(_) => return None,
+    };
+
+    match lock_file.packages.iter().find(|v| v.name.to_string() == "wasm-bindgen") {
+        Some(pkg) => Some(pkg.version.to_string()),
+        None => None,
+    }
 }

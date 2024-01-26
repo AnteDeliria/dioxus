@@ -1,7 +1,6 @@
 use crate::{
     assets::{asset_manifest, create_assets_head, process_assets, WebAssetConfigDropGuard},
     error::Result,
-    Error,
 };
 use cargo_metadata::{diagnostic::Diagnostic, Message};
 use dioxus_cli_config::crate_root;
@@ -141,7 +140,7 @@ pub fn build(config: &CrateConfig, _: bool, skip_assets: bool) -> Result<BuildRe
 
     // Bindgen the final binary
     log::info!("Running bindgen...");
-    let bindgen = crate::tools::Bindgen::get()
+    let bindgen = crate::tools::Bindgen::get(config.bindgen_version.clone())
         .expect("WASM Bindgen failed")
         .debug(!config.release)
         .keep_debug(!config.release)

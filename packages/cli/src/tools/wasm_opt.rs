@@ -8,15 +8,15 @@ const TOOL_NAME: &str = "wasm-opt";
 
 // Windows
 #[cfg(target_os = "windows")]
-const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-windows.tar.gz";
+const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_116/binaryen-version_116-x86_64-windows.tar.gz";
 // MacOS
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
-const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-arm64-macos.tar.gz";
+const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_116/binaryen-version_116-arm64-macos.tar.gz";
 #[cfg(all(target_os = "macos", target_arch = "x86_64"))]
-const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-macos.tar.gz";
+const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_116/binaryen-version_116-x86_64-macos.tar.gz";
 // Linux
 #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
-const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz";
+const INSTALL_URL: &str = "https://github.com/WebAssembly/binaryen/releases/download/version_116/binaryen-version_116-x86_64-linux.tar.gz";
 
 pub struct WasmOpt {
     exec_path: PathBuf,
