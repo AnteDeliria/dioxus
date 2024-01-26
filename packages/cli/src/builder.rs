@@ -1,7 +1,7 @@
 use crate::{
     assets::{asset_manifest, create_assets_head, process_assets, WebAssetConfigDropGuard},
-    error::{Error, Result},
-    tools::Tool,
+    error::Result,
+    Error,
 };
 use cargo_metadata::{diagnostic::Diagnostic, Message};
 use dioxus_cli_config::crate_root;
@@ -11,13 +11,12 @@ use indicatif::{ProgressBar, ProgressStyle};
 use lazy_static::lazy_static;
 use manganis_cli_support::{AssetManifest, ManganisSupportGuard};
 use std::{
-    fs::{copy, create_dir_all, File},
+    ffi::OsStr,
+    fs::{self, copy, create_dir_all, File},
     io::Read,
-    panic,
     path::PathBuf,
     time::Duration,
 };
-use wasm_bindgen_cli_support::Bindgen;
 
 lazy_static! {
     static ref PROGRESS_BARS: indicatif::MultiProgress = indicatif::MultiProgress::new();
@@ -52,7 +51,7 @@ pub fn build(config: &CrateConfig, _: bool, skip_assets: bool) -> Result<BuildRe
     let _manganis_support = ManganisSupportGuard::default();
 
     // start to build the assets
-    let ignore_files = build_assets(config)?;
+    let ignore_files = build_scss(config)?;
 
     let t_start = std::time::Instant::now();
     let _guard = dioxus_cli_config::__private::save_config(config);
@@ -140,65 +139,39 @@ pub fn build(config: &CrateConfig, _: bool, skip_assets: bool) -> Result<BuildRe
             .join(format!("{}.wasm", name)),
     };
 
-    let bindgen_result = panic::catch_unwind(move || {
-        // [3] Bindgen the final binary for use easy linking
-        let mut bindgen_builder = Bindgen::new();
+    // Bindgen the final binary
+    log::info!("Running bindgen...");
+    let bindgen = crate::tools::Bindgen::get()
+        .expect("WASM Bindgen failed")
+        .debug(!config.release)
+        .keep_debug(!config.release)
+        .no_demangle(config.release);
 
-        bindgen_builder
-            .input_path(input_path)
-            .web(true)
-            .unwrap()
-            .debug(true)
-            .demangle(true)
-            .keep_debug(true)
-            .remove_name_section(false)
-            .remove_producers_section(false)
-            .out_name(&dioxus_config.application.name)
-            .generate(&bindgen_outdir)
-            .unwrap();
-    });
-    if bindgen_result.is_err() {
-        return Err(Error::BuildFailed("Bindgen build failed! \nThis is probably due to the Bindgen version, dioxus-cli using `0.2.81` Bindgen crate.".to_string()));
-    }
+    let final_bindgen_path = bindgen_outdir.join(dioxus_config.application.name.clone());
+    bindgen
+        .run(input_path, final_bindgen_path)
+        .expect("WASM Bindgen failed");
 
-    // check binaryen:wasm-opt tool
-    let dioxus_tools = dioxus_config.application.tools.clone();
-    if dioxus_tools.contains_key("binaryen") {
-        let info = dioxus_tools.get("binaryen").unwrap();
-        let binaryen = crate::tools::Tool::Binaryen;
-
-        if binaryen.is_installed() {
-            if let Some(sub) = info.as_table() {
-                if sub.contains_key("wasm_opt")
-                    && sub.get("wasm_opt").unwrap().as_bool().unwrap_or(false)
-                {
-                    log::info!("Optimizing WASM size with wasm-opt...");
-                    let target_file = out_dir
-                        .join("assets")
-                        .join("dioxus")
-                        .join(format!("{}_bg.wasm", dioxus_config.application.name));
-                    if target_file.is_file() {
-                        let mut args = vec![
-                            target_file.to_str().unwrap(),
-                            "-o",
-                            target_file.to_str().unwrap(),
-                        ];
-                        if config.release {
-                            args.push("-Oz");
-                        }
-                        binaryen.call("wasm-opt", args)?;
-                    }
+    // If release, optimize the wasm binary
+    // This doesn't panic because it is not critical to the final build.
+    // Instead we warn the user that something is up.
+    if config.release {
+        log::info!("Optimizing with wasm-opt...");
+        let input_path = bindgen_outdir.join(format!("{}_bg.wasm", dioxus_config.application.name));
+        match crate::tools::WasmOpt::get() {
+            Ok(wasm_opt) => {
+                if let Err(e) = wasm_opt.run(input_path.clone(), input_path) {
+                    log::warn!("WASM-Opt failed: {e}");
                 }
             }
-        } else {
-            log::warn!(
-                "Binaryen tool not found, you can use `dx tool add binaryen` to install it."
-            );
-        }
+            Err(e) => {
+                log::warn!("WASM-Opt failed: {e}");
+            }
+        };
     }
 
     // [5][OPTIONAL] If tailwind is enabled and installed we run it to generate the CSS
-    if dioxus_tools.contains_key("tailwindcss") {
+    /*if dioxus_tools.contains_key("tailwindcss") {
         let info = dioxus_tools.get("tailwindcss").unwrap();
         let tailwind = crate::tools::Tool::Tailwind;
 
@@ -234,7 +207,7 @@ pub fn build(config: &CrateConfig, _: bool, skip_assets: bool) -> Result<BuildRe
                 "Tailwind tool not found, you can use `dx tool add tailwindcss` to install it."
             );
         }
-    }
+    }*/
 
     // this code will copy all public file to the output dir
     let copy_options = fs_extra::dir::CopyOptions {
@@ -291,7 +264,7 @@ pub fn build_desktop(
     log::info!("🚅 Running build [Desktop] command...");
 
     let t_start = std::time::Instant::now();
-    let ignore_files = build_assets(config)?;
+    let ignore_files = build_scss(config)?;
     let _guard = dioxus_cli_config::__private::save_config(config);
     let _manganis_support = ManganisSupportGuard::default();
 
@@ -604,148 +577,88 @@ fn replace_or_insert_before(
     }
 }
 
-// this function will build some assets file
-// like sass tool resources
-// this function will return a array which file don't need copy to out_dir.
-fn build_assets(config: &CrateConfig) -> Result<Vec<PathBuf>> {
-    let mut result = vec![];
+/// This function builds scss files into css.
+/// The output returns a list of paths that do not need to be copied.
+fn build_scss(config: &CrateConfig) -> Result<Vec<PathBuf>> {
+    // Get sass files from asset dir
+    let mut sass_files = sass_from_dir(config.asset_dir.clone())?;
 
-    let dioxus_config = &config.dioxus_config;
-    let dioxus_tools = dioxus_config.application.tools.clone();
-
-    // check sass tool state
-    let sass = Tool::Sass;
-    if sass.is_installed() && dioxus_tools.contains_key("sass") {
-        let sass_conf = dioxus_tools.get("sass").unwrap();
-        if let Some(tab) = sass_conf.as_table() {
-            let source_map = tab.contains_key("source_map");
-            let source_map = if source_map && tab.get("source_map").unwrap().is_bool() {
-                if tab.get("source_map").unwrap().as_bool().unwrap_or_default() {
-                    "--source-map"
-                } else {
-                    "--no-source-map"
-                }
-            } else {
-                "--source-map"
+    // Get sass files from dioxus-toml styles
+    if let Some(styles_list) = &config.dioxus_config.web.resource.style {
+        for path in styles_list {
+            let extension = match path.extension().and_then(OsStr::to_str) {
+                Some(ext) => ext,
+                None => continue,
             };
 
-            if tab.contains_key("input") {
-                if tab.get("input").unwrap().is_str() {
-                    let file = tab.get("input").unwrap().as_str().unwrap().trim();
+            if extension == "scss" || extension == "sass" {
+                sass_files.push(path.clone());
+            }
+        }
+    }
 
-                    if file == "*" {
-                        // if the sass open auto, we need auto-check the assets dir.
-                        let asset_dir = config.asset_dir.clone();
-                        if asset_dir.is_dir() {
-                            for entry in walkdir::WalkDir::new(&asset_dir)
-                                .into_iter()
-                                .filter_map(|e| e.ok())
-                            {
-                                let temp = entry.path();
-                                if temp.is_file() {
-                                    let suffix = temp.extension();
-                                    if suffix.is_none() {
-                                        continue;
-                                    }
-                                    let suffix = suffix.unwrap().to_str().unwrap();
-                                    if suffix == "scss" || suffix == "sass" {
-                                        // if file suffix is `scss` / `sass` we need transform it.
-                                        let out_file = format!(
-                                            "{}.css",
-                                            temp.file_stem().unwrap().to_str().unwrap()
-                                        );
-                                        let target_path = config
-                                            .out_dir
-                                            .join(
-                                                temp.strip_prefix(&asset_dir)
-                                                    .unwrap()
-                                                    .parent()
-                                                    .unwrap(),
-                                            )
-                                            .join(out_file);
-                                        let res = sass.call(
-                                            "sass",
-                                            vec![
-                                                temp.to_str().unwrap(),
-                                                target_path.to_str().unwrap(),
-                                                source_map,
-                                            ],
-                                        );
-                                        if res.is_ok() {
-                                            result.push(temp.to_path_buf());
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        // just transform one file.
-                        let relative_path = if &file[0..1] == "/" {
-                            &file[1..file.len()]
-                        } else {
-                            file
-                        };
-                        let path = config.asset_dir.join(relative_path);
-                        let out_file =
-                            format!("{}.css", path.file_stem().unwrap().to_str().unwrap());
-                        let target_path = config
-                            .out_dir
-                            .join(PathBuf::from(relative_path).parent().unwrap())
-                            .join(out_file);
-                        if path.is_file() {
-                            let res = sass.call(
-                                "sass",
-                                vec![
-                                    path.to_str().unwrap(),
-                                    target_path.to_str().unwrap(),
-                                    source_map,
-                                ],
-                            );
-                            if res.is_ok() {
-                                result.push(path);
-                            } else {
-                                log::error!("{:?}", res);
-                            }
-                        }
-                    }
-                } else if tab.get("input").unwrap().is_array() {
-                    // check files list.
-                    let list = tab.get("input").unwrap().as_array().unwrap();
-                    for i in list {
-                        if i.is_str() {
-                            let path = i.as_str().unwrap();
-                            let relative_path = if &path[0..1] == "/" {
-                                &path[1..path.len()]
-                            } else {
-                                path
-                            };
-                            let path = config.asset_dir.join(relative_path);
-                            let out_file =
-                                format!("{}.css", path.file_stem().unwrap().to_str().unwrap());
-                            let target_path = config
-                                .out_dir
-                                .join(PathBuf::from(relative_path).parent().unwrap())
-                                .join(out_file);
-                            if path.is_file() {
-                                let res = sass.call(
-                                    "sass",
-                                    vec![
-                                        path.to_str().unwrap(),
-                                        target_path.to_str().unwrap(),
-                                        source_map,
-                                    ],
-                                );
-                                if res.is_ok() {
-                                    result.push(path);
-                                }
-                            }
-                        }
-                    }
+    // Check if we need to build any sass
+    if sass_files.is_empty() {
+        return Ok(Vec::new());
+    }
+
+    // Build the sass
+    let sass = crate::tools::Sass::get()?.source_map(!config.release);
+    let mut out_files = Vec::new();
+
+    for path in sass_files {
+        // Get the file name and convert to &str
+        let file_name = match path.file_stem() {
+            Some(f) => f,
+            None => continue,
+        };
+
+        let file_name = match file_name.to_str() {
+            Some(f) => f,
+            None => continue,
+        };
+
+        let out_path = config
+            .out_dir
+            .join(
+                path.strip_prefix(config.asset_dir.clone())
+                    .unwrap()
+                    .parent()
+                    .unwrap(),
+            )
+            .join(format!("{}.css", file_name));
+
+        sass.run(path, out_path.clone())?;
+        out_files.push(out_path);
+    }
+
+    Ok(out_files)
+}
+
+fn sass_from_dir(dir_path: PathBuf) -> Result<Vec<PathBuf>> {
+    let mut file_paths = Vec::new();
+
+    // recursively get files
+    if dir_path.is_dir() {
+        for item in fs::read_dir(dir_path)? {
+            let item = item?;
+            let path = item.path();
+
+            if path.is_dir() {
+                // If directory, get files from it
+                file_paths.append(&mut sass_from_dir(path)?);
+            } else {
+                let extension = match path.extension().and_then(OsStr::to_str) {
+                    Some(ext) => ext,
+                    None => continue,
+                };
+
+                if extension == "scss" || extension == "sass" {
+                    file_paths.push(path);
                 }
             }
         }
     }
-    // SASS END
 
-    Ok(result)
+    Ok(file_paths)
 }
