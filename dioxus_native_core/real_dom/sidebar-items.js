@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["NodeTypeMut"],"struct":["ElementNodeMut","NodeMut","NodeRef","RealDom","TextNodeMut","ViewEntry","ViewEntryMut"],"trait":["NodeImmutable"]};

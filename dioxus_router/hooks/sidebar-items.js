@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["router","use_navigator","use_route","use_router"]};

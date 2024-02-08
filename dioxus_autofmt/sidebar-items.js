@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["IndentType"],"fn":["apply_format","apply_formats","fmt_block","fmt_block_from_expr","fmt_file","write_block_out"],"struct":["FormattedBlock","IndentOptions"]};

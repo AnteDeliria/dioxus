@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["app","get_permissions","get_user_name","login","main"],"struct":["GetUserName","Login","Permissions"]};

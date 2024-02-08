@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["app","get_server_data","main","post_server_data"],"struct":["GetServerData","PostServerData"]};

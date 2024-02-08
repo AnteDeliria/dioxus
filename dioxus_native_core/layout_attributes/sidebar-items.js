@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["apply_layout_attributes","apply_layout_attributes_cfg","parse_value"],"struct":["BorderWidths","LayoutConfigeration"]};

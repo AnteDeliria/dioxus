@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"dioxus_cli":[["impl Subcommand for <a class=\"enum\" href=\"dioxus_cli/cli/enum.Commands.html\" title=\"enum dioxus_cli::cli::Commands\">Commands</a>"],["impl Subcommand for <a class=\"enum\" href=\"dioxus_cli/cli/config/enum.Config.html\" title=\"enum dioxus_cli::cli::config::Config\">Config</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

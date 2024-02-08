@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["custom_element","dioxus","exports","layout_attributes","node","node_ref","node_watcher","prelude","real_dom","tree","utils"],"struct":["NodeId"],"type":["FxDashMap","FxDashSet","SendAnyMap"]};

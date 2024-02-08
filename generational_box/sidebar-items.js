@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BorrowError","BorrowMutError"],"struct":["AlreadyBorrowedError","AlreadyBorrowedMutError","GenerationalBox","GenerationalBoxId","GenerationalRef","GenerationalRefBorrowInfo","GenerationalRefMut","GenerationalRefMutBorrowInfo","MemoryLocation","Owner","SyncStorage","UnsyncStorage","ValueDroppedError"],"trait":["AnyStorage","Storage"]};

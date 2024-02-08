@@ -1,0 +1,4 @@
+(function() {var implementors = {
+"axum_router":[["impl&lt;'a&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/1.76.0/core/convert/trait.TryFrom.html\" title=\"trait core::convert::TryFrom\">TryFrom</a>&lt;&amp;'a <a class=\"primitive\" href=\"https://doc.rust-lang.org/1.76.0/std/primitive.str.html\">str</a>&gt; for <a class=\"enum\" href=\"axum_router/enum.Route.html\" title=\"enum axum_router::Route\">Route</a>"]],
+"static_hydrated":[["impl&lt;'a&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/1.76.0/core/convert/trait.TryFrom.html\" title=\"trait core::convert::TryFrom\">TryFrom</a>&lt;&amp;'a <a class=\"primitive\" href=\"https://doc.rust-lang.org/1.76.0/std/primitive.str.html\">str</a>&gt; for <a class=\"enum\" href=\"static_hydrated/enum.Route.html\" title=\"enum static_hydrated::Route\">Route</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

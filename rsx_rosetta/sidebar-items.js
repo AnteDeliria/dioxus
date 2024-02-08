@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Node"],"fn":["collect_svgs","rsx_from_html","rsx_node_from_html"],"struct":["Dom"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["Routable"],"fn":["navigator"],"struct":["MemoryHistory","Navigator","RouterConfig","WebHistory"],"trait":["HistoryProvider"]};

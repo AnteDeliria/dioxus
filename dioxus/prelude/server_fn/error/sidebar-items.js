@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ServerFnError","ServerFnErrorErr"],"struct":["Error"],"type":["Result"]};

@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Resources"><title>dioxus_ssr - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="dioxus_ssr" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://avatars.githubusercontent.com/u/79236386"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../dioxus_ssr/index.html"><img src="https://avatars.githubusercontent.com/u/79236386" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../dioxus_ssr/index.html"><img src="https://avatars.githubusercontent.com/u/79236386" alt="logo"></a><h2><a href="../dioxus_ssr/index.html">dioxus_ssr</a><span class="version">0.4.3</span></h2></div><div class="sidebar-elems"><ul class="block">
+            <li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#functions">Functions</a></li></ul></section></div></nav><div class="sidebar-resizer"></div>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../dioxus_ssr/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">dioxus_ssr</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/dioxus_ssr/lib.rs.html#1-52">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><div align="center">
+  <h1>Dioxus Server-Side Rendering (SSR)</h1>
+  <p>
+    <strong>Render Dioxus to valid html.</strong>
+  </p>
+</div>
+<h3 id="resources"><a href="#resources">Resources</a></h3>
+<p>This crate is a part of the broader Dioxus ecosystem. For more resources about Dioxus, check out:</p>
+<ul>
+<li><a href="https://dioxuslabs.com/learn/0.4/getting_started">Getting Started</a></li>
+<li><a href="https://dioxuslabs.com/learn/0.4/">Book</a></li>
+<li><a href="https://github.com/DioxusLabs/example-projects">Examples</a></li>
+</ul>
+<h3 id="overview"><a href="#overview">Overview</a></h3>
+<p>Dioxus SSR provides utilities to render Dioxus components to valid HTML. Once rendered, the HTML can be rehydrated client-side or served from your web server of choice.</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>app: Component = |cx| <span class="macro">rsx!</span>(div {<span class="string">"hello world!"</span>});
+
+<span class="kw">let </span><span class="kw-2">mut </span>vdom = VirtualDom::new(app);
+<span class="kw">let _ </span>= vdom.rebuild();
+
+<span class="kw">let </span>text = dioxus_ssr::render(<span class="kw-2">&amp;</span>vdom);
+<span class="macro">assert_eq!</span>(text, <span class="string">"&lt;div&gt;hello world!&lt;/div&gt;"</span>)</code></pre></div>
+<h3 id="basic-usage"><a href="#basic-usage">Basic Usage</a></h3>
+<p>The simplest example is to simply render some <code>rsx!</code> nodes to HTML. This can be done with the <a href="fn.render_element.html" title="fn dioxus_ssr::render_element"><code>render_element</code></a> API.</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>content = dioxus_ssr::render_element(<span class="macro">rsx!</span>{
+    div {
+        (<span class="number">0</span>..<span class="number">5</span>).map(|i| <span class="macro">rsx!</span>(
+            <span class="string">"Number: {i}"
+        </span>))
+    }
+});</code></pre></div>
+<h3 id="rendering-a-virtualdom"><a href="#rendering-a-virtualdom">Rendering a VirtualDom</a></h3>
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>vdom = VirtualDom::new(app);
+<span class="kw">let _ </span>= vdom.rebuild();
+
+<span class="kw">let </span>content = dioxus_ssr::render(<span class="kw-2">&amp;</span>vdom);</code></pre></div>
+<h3 id="usage-in-pre-rendering"><a href="#usage-in-pre-rendering">Usage in pre-rendering</a></h3>
+<p>This crate is particularly useful in pre-generating pages server-side and then selectively loading Dioxus client-side to pick up the reactive elements.</p>
+<p>This crate supports hydration out of the box. However, both the client and server must generate the <em>exact</em> same VirtualDOMs - the client picks up its VirtualDOM assuming that the pre-rendered page output is the same. To do this, you need to make sure that your VirtualDOM implementation is deterministic! This could involve either serializing our app state and sending it to the client, hydrating only parts of the page, or building tests to ensure what’s rendered on the server is the same as the client.</p>
+<p>With pre-rendering enabled, this crate will generate element nodes with Element IDs pre-associated. During hydration, the Dioxus-WebSys renderer will attach the Virtual nodes to these real nodes after a page query.</p>
+<p>To enable pre-rendering, simply set the pre-rendering flag to true.</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>vdom = VirtualDom::new(App);
+
+<span class="kw">let _ </span>= vdom.rebuild();
+
+<span class="kw">let </span><span class="kw-2">mut </span>renderer = dioxus_ssr::Renderer::new();
+renderer.pre_render = <span class="bool-val">true</span>;
+
+<span class="kw">let </span>text = renderer.render(<span class="kw-2">&amp;</span>vdom);</code></pre></div>
+<h3 id="usage-in-server-side-rendering"><a href="#usage-in-server-side-rendering">Usage in server-side rendering</a></h3>
+<p>Dioxus SSR can also be used to render on the server. You can just render the VirtualDOM to a string and send that to the client.</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>text = dioxus_ssr::render(<span class="kw-2">&amp;</span>vdom);
+<span class="macro">assert_eq!</span>(text, <span class="string">"&lt;div&gt;hello world!&lt;/div&gt;"</span>)</code></pre></div>
+<p>The rest of the space - IE doing this more efficiently, caching the VirtualDom, etc, will all need to be a custom implementation for now.</p>
+<h3 id="usage-without-a-virtualdom"><a href="#usage-without-a-virtualdom">Usage without a VirtualDom</a></h3>
+<p>Dioxus SSR needs an arena to allocate from - whether it be the VirtualDom or a dedicated Bump allocator. To render <code>rsx!</code> directly to a string, you’ll want to create a <code>Renderer</code> and call <code>render_element</code>.</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>text = dioxus_ssr::Renderer::new().render_element(<span class="macro">rsx!</span>{
+    div { <span class="string">"hello world" </span>}
+});
+<span class="macro">assert_eq!</span>(text, <span class="string">"&lt;div&gt;hello world!&lt;/div&gt;"</span>)</code></pre></div>
+<p>This can be automated with the <code>render_element!</code> macro:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>text = <span class="macro">render_element!</span>(<span class="macro">rsx!</span>( div { <span class="string">"hello world" </span>} ));</code></pre></div>
+<h3 id="usage-in-static-site-generation"><a href="#usage-in-static-site-generation">Usage in static site generation</a></h3>
+<p>Dioxus SSR is a powerful tool to generate static sites. Using Dioxus for static site generation <em>is</em> a bit overkill, however. The new documentation generation library, Doxie, is essentially Dioxus SSR on steroids designed for static site generation with client-side hydration.</p>
+<p>Again, simply render the VirtualDOM to a string using <code>render</code> or any of the other render methods.</p>
+</div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.Renderer"><code>pub use crate::renderer::<a class="struct" href="renderer/struct.Renderer.html" title="struct dioxus_ssr::renderer::Renderer">Renderer</a>;</code></div></li></ul><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="config/index.html" title="mod dioxus_ssr::config">config</a></div></li><li><div class="item-name"><a class="mod" href="eval/index.html" title="mod dioxus_ssr::eval">eval</a></div></li><li><div class="item-name"><a class="mod" href="renderer/index.html" title="mod dioxus_ssr::renderer">renderer</a></div></li><li><div class="item-name"><a class="mod" href="template/index.html" title="mod dioxus_ssr::template">template</a></div></li></ul><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.pre_render.html" title="fn dioxus_ssr::pre_render">pre_render</a></div><div class="desc docblock-short">A convenience function to pre-render an existing VirtualDom to a string</div></li><li><div class="item-name"><a class="fn" href="fn.render.html" title="fn dioxus_ssr::render">render</a></div><div class="desc docblock-short">A convenience function to render an existing VirtualDom to a string</div></li><li><div class="item-name"><a class="fn" href="fn.render_element.html" title="fn dioxus_ssr::render_element">render_element</a></div><div class="desc docblock-short">A convenience function to render an <code>rsx!</code> call to a string</div></li></ul></section></div></main></body></html>

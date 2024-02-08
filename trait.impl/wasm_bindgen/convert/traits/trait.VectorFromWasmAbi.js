@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"dioxus_ext":[["impl <a class=\"trait\" href=\"https://docs.rs/wasm-bindgen/0.2/wasm_bindgen/convert/traits/trait.VectorFromWasmAbi.html\" title=\"trait wasm_bindgen::convert::traits::VectorFromWasmAbi\">VectorFromWasmAbi</a> for <a class=\"struct\" href=\"dioxus_ext/struct.FormatBlockInstance.html\" title=\"struct dioxus_ext::FormatBlockInstance\">FormatBlockInstance</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

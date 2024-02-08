@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["x11"],"struct":["UnixEventLoop"],"trait":["EventLoopBuilderExtUnix","EventLoopWindowTargetExtUnix","WindowBuilderExtUnix","WindowExtUnix"]};

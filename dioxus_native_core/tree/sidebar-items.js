@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Node","ShadowTree"],"trait":["TreeMut","TreeRef"],"type":["TreeMutView","TreeRefView"]};

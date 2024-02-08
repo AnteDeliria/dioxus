@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Dioxus Fullstack"><title>dioxus_fullstack - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="dioxus_fullstack" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://avatars.githubusercontent.com/u/79236386"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../dioxus_fullstack/index.html"><img src="https://avatars.githubusercontent.com/u/79236386" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../dioxus_fullstack/index.html"><img src="https://avatars.githubusercontent.com/u/79236386" alt="logo"></a><h2><a href="../dioxus_fullstack/index.html">dioxus_fullstack</a><span class="version">0.4.3</span></h2></div><div class="sidebar-elems"><ul class="block">
+            <li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li></ul></section></div></nav><div class="sidebar-resizer"></div>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../dioxus_fullstack/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">dioxus_fullstack</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/dioxus_fullstack/lib.rs.html#1-76">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="dioxus-fullstack"><a href="#dioxus-fullstack">Dioxus Fullstack</a></h2>
+<p><a href="https://crates.io/crates/dioxus-fullstack"><img src="https://img.shields.io/crates/v/dioxus-fullstack.svg" alt="Crates.io" /></a>
+<a href="https://github.com/dioxuslabs/dioxus/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed" /></a>
+<a href="https://github.com/dioxuslabs/dioxus/actions?query=workflow%3ACI+branch%3Amaster"><img src="https://github.com/dioxuslabs/dioxus/actions/workflows/main.yml/badge.svg" alt="Build Status" /></a>
+<a href="https://discord.gg/XgGxMSkvUM"><img src="https://img.shields.io/discord/899851952891002890.svg?logo=discord&amp;style=flat-square" alt="Discord chat" /></a></p>
+<p><a href="https://dioxuslabs.com">Website</a> |
+<a href="https://dioxuslabs.com/learn/0.4/">Guides</a> |
+<a href="https://docs.rs/dioxus-fullstack/latest/dioxus_sever">API Docs</a> |
+<a href="https://discord.gg/XgGxMSkvUM">Chat</a></p>
+<p>Fullstack utilities for the <a href="https://dioxuslabs.com"><code>Dioxus</code></a> framework.</p>
+<h2 id="features"><a href="#features">Features</a></h2>
+<ul>
+<li>Intigrations with the <a href="https::/docs.rs/dioxus-fullstack/latest/dixous_server/axum_adapter/index.html">Axum</a>, <a href="https::/docs.rs/dioxus-fullstack/latest/dixous_server/salvo_adapter/index.html">Salvo</a>, and <a href="https::/docs.rs/dioxus-fullstack/latest/dixous_server/warp_adapter/index.html">Warp</a> server frameworks with utilities for serving and rendering Dioxus applications.</li>
+<li><a href="https::/docs.rs/dioxus-fullstack/latest/dixous_server/prelude/attr.server.html">Server functions</a> allow you to call code on the server from the client as if it were a normal function.</li>
+<li>Instant RSX Hot reloading with <a href="https://crates.io/crates/dioxus-hot-reload"><code>dioxus-hot-reload</code></a>.</li>
+<li>Passing root props from the server to the client.</li>
+</ul>
+<h2 id="example"><a href="#example">Example</a></h2>
+<p>Full stack Dioxus in under 50 lines of code</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#![allow(non_snake_case)]
+</span><span class="kw">use </span>dioxus::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>dioxus_fullstack::prelude::<span class="kw-2">*</span>;
+
+<span class="kw">fn </span>main() {
+    <span class="attr">#[cfg(feature = <span class="string">"web"</span>)]
+    </span>dioxus_web::launch_with_props(
+        app,
+        get_root_props_from_document().unwrap_or_default(),
+        dioxus_web::Config::new().hydrate(<span class="bool-val">true</span>),
+    );
+    <span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
+    </span>{
+        tokio::runtime::Runtime::new()
+            .unwrap()
+            .block_on(<span class="kw">async move </span>{
+                warp::serve(
+                    <span class="comment">// Automatically handles server side rendering, hot reloading intigration, and hosting server functions
+                    </span>serve_dioxus_application(
+                        <span class="string">""</span>,
+                        ServerConfig::new(app, ()),
+                    )
+                )
+                .run(([<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], <span class="number">8080</span>))
+                .<span class="kw">await</span>;
+            });
+    }
+}
+
+<span class="kw">fn </span>app() -&gt; Element {
+    <span class="kw">let </span>meaning = use_signal(|| <span class="prelude-val">None</span>);
+    <span class="macro">rsx! </span>{
+        button {
+            onclick: <span class="kw">move </span>|<span class="kw">_</span>| {
+                <span class="macro">to_owned!</span>[meaning];
+                <span class="kw">async move </span>{
+                    <span class="kw">if let </span><span class="prelude-val">Ok</span>(data) = get_meaning(<span class="string">"life the universe and everything"</span>.into()).<span class="kw">await </span>{
+                        meaning.set(data);
+                    }
+                }
+            },
+            <span class="string">"Run a server function"
+        </span>}
+        <span class="string">"Server said: {meaning:?}"
+    </span>})
+}
+
+<span class="comment">// This code will only run on the server
+</span><span class="attr">#[server(GetMeaning)]
+</span><span class="kw">async fn </span>get_meaning(of: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;, ServerFnError&gt; {
+    <span class="prelude-val">Ok</span>(of.contains(<span class="string">"life"</span>).then(|| <span class="number">42</span>))
+}</code></pre></div>
+<h3 id="getting-started"><a href="#getting-started">Getting Started</a></h3>
+<p>To get started with full stack Dioxus, check out our <a href="https://dioxuslabs.com/docs/nightly/guide/en/getting_started/ssr.html">getting started guide</a>, or the <a href="https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples">full stack examples</a>.</p>
+<h3 id="contributing"><a href="#contributing">Contributing</a></h3>
+<ul>
+<li>Report issues on our <a href="https://github.com/dioxuslabs/dioxus/issues">issue tracker</a>.</li>
+<li>Join the discord and ask questions!</li>
+</ul>
+<h3 id="license"><a href="#license">License</a></h3>
+<p>This project is licensed under the <a href="https://github.com/DioxusLabs/dioxus/blob/master/LICENSE-MIT">MIT license</a>.</p>
+<p>Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in Dioxus by you shall be licensed as MIT without any additional
+terms or conditions.</p>
+</div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.once_cell"><code>pub use once_cell;</code></div></li></ul><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="launch/index.html" title="mod dioxus_fullstack::launch">launch</a></div><div class="desc docblock-short">This module contains the <code>launch</code> function, which is the main entry point for dioxus fullstack</div></li><li><div class="item-name"><a class="mod" href="prelude/index.html" title="mod dioxus_fullstack::prelude">prelude</a></div><div class="desc docblock-short">A prelude of commonly used items in dioxus-fullstack.</div></li></ul><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Config.html" title="struct dioxus_fullstack::Config">Config</a></div><div class="desc docblock-short">Settings for a fullstack app.</div></li></ul></section></div></main></body></html>

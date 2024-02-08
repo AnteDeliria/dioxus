@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Leverage React-like patterns, CSS, HTML, and Rust to build beautiful, portable, terminal user interfaces with Dioxus."><title>dioxus_tui - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="dioxus_tui" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://avatars.githubusercontent.com/u/79236386"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../dioxus_tui/index.html"><img src="https://avatars.githubusercontent.com/u/79236386" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../dioxus_tui/index.html"><img src="https://avatars.githubusercontent.com/u/79236386" alt="logo"></a><h2><a href="../dioxus_tui/index.html">dioxus_tui</a><span class="version">0.4.3</span></h2></div><div class="sidebar-elems"><ul class="block">
+            <li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li></ul></section></div></nav><div class="sidebar-resizer"></div>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../dioxus_tui/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">dioxus_tui</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/dioxus_tui/lib.rs.html#1-208">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><div align="center">
+  <h1>Dioxus TUI</h1>
+  <p>
+    <strong>Beautiful terminal user interfaces in Rust with <a href="https://dioxuslabs.com/">Dioxus </a>.</strong>
+  </p>
+</div>
+<div align="center">
+  <!-- Crates version -->
+  <a href="https://crates.io/crates/dioxus">
+    <img src="https://img.shields.io/crates/v/dioxus.svg?style=flat-square"
+    alt="Crates.io version" />
+  </a>
+  <!-- Downloads -->
+  <a href="https://crates.io/crates/dioxus">
+    <img src="https://img.shields.io/crates/d/dioxus.svg?style=flat-square"
+      alt="Download" />
+  </a>
+  <!-- docs -->
+  <a href="https://docs.rs/dioxus">
+    <img src="https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square"
+      alt="docs.rs docs" />
+  </a>
+  <!-- CI -->
+  <a href="https://github.com/jkelleyrtp/dioxus/actions">
+    <img src="https://github.com/dioxuslabs/dioxus/actions/workflows/main.yml/badge.svg"
+      alt="CI status" />
+  </a>
+<!--Awesome -->
+<a href="https://github.com/dioxuslabs/awesome-dioxus">
+    <img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome Page" />
+  </a>
+  <!-- Discord -->
+  <a href="https://discord.gg/XgGxMSkvUM">
+    <img src="https://img.shields.io/discord/899851952891002890.svg?logo=discord&style=flat-square" alt="Discord Link" />
+  </a>
+</div>
+<br/>
+<p>Leverage React-like patterns, CSS, HTML, and Rust to build beautiful, portable, terminal user interfaces with Dioxus.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>app() -&gt; Element {
+    <span class="macro">rsx!</span>{
+        div {
+            width: <span class="string">"100%"</span>,
+            height: <span class="string">"10px"</span>,
+            background_color: <span class="string">"red"</span>,
+            justify_content: <span class="string">"center"</span>,
+            align_items: <span class="string">"center"</span>,
+            <span class="string">"Hello world!"
+        </span>}
+    })
+}</code></pre></div>
+<p><img src="examples/example.png" alt="demo app" /></p>
+<h3 id="background"><a href="#background">Background</a></h3>
+<p>You can use Html-like semantics with inline styles, tree hierarchy, components, and more in your <a href="https://en.wikipedia.org/wiki/Text-based_user_interface"><code>text-based user interface (TUI)</code></a> application.</p>
+<p>Dioxus TUI is essentially a port of <a href="https://github.com/vadimdemedes/ink">Ink</a> but for <a href="https://www.rust-lang.org/"><code>Rust</code></a> and <a href="https://dioxuslabs.com/"><code>Dioxus</code></a>. Dioxus TUI doesn’t depend on Node.js or any other JavaScript runtime, so your binaries are portable and beautiful.</p>
+<h3 id="limitations"><a href="#limitations">Limitations</a></h3>
+<ul>
+<li><strong>Subset of Html</strong>
+Terminals can only render a subset of HTML. We support as much as we can.</li>
+<li><strong>Particular frontend design</strong>
+Terminals and browsers are and look different. Therefore, the same design might not be the best to cover both renderers.</li>
+</ul>
+<h3 id="status"><a href="#status">Status</a></h3>
+<p><strong>WARNING: Dioxus TUI is currently under construction!</strong></p>
+<p>Rendering a VirtualDom works fine, but the ecosystem of hooks is not yet ready. Additionally, some bugs in the flexbox implementation might be quirky at times.</p>
+<h3 id="features"><a href="#features">Features</a></h3>
+<p>Dioxus TUI features:</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Flexbox-based layout system</li>
+<li><input disabled="" type="checkbox"/>
+CSS selectors</li>
+<li><input disabled="" type="checkbox" checked=""/>
+inline CSS support</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Built-in focusing system</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Widgets<sup>1</sup></li>
+<li><input disabled="" type="checkbox"/>
+Support for events, hooks, and callbacks<sup>2</sup></li>
+<li><input disabled="" type="checkbox"/>
+Html tags<sup>3</sup></li>
+</ul>
+<p><sup>1</sup> Currently only a subset of the input element is implemented as a component (not an element). The <code>Input</code> component supports sliders, text, numbers, passwords, buttons, and checkboxes.
+<sup>2</sup> Basic keyboard, mouse, and focus events are implemented.
+<sup>3</sup> Currently, most HTML tags don’t translate into any meaning inside of Dioxus TUI. So an <code>input</code> <em>element</em> won’t mean anything nor does it have any additional functionality.</p>
+</div></details><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="launch/index.html" title="mod dioxus_tui::launch">launch</a></div></li></ul><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Config.html" title="struct dioxus_tui::Config">Config</a></div></li><li><div class="item-name"><a class="struct" href="struct.DioxusElementToNodeId.html" title="struct dioxus_tui::DioxusElementToNodeId">DioxusElementToNodeId</a></div></li><li><div class="item-name"><a class="struct" href="struct.Query.html" title="struct dioxus_tui::Query">Query</a></div><div class="desc docblock-short">Allows querying the layout of nodes after rendering. It will only provide a correct value after a node is rendered.
+Provided as a root context for all tui applictions.</div></li><li><div class="item-name"><a class="struct" href="struct.Size.html" title="struct dioxus_tui::Size">Size</a></div><div class="desc docblock-short">The width and height of a [<code>Rect</code>]</div></li><li><div class="item-name"><a class="struct" href="struct.TuiContext.html" title="struct dioxus_tui::TuiContext">TuiContext</a></div></li></ul><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.RenderingMode.html" title="enum dioxus_tui::RenderingMode">RenderingMode</a></div></li></ul><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.launch.html" title="fn dioxus_tui::launch">launch</a></div></li><li><div class="item-name"><a class="fn" href="fn.launch_cfg.html" title="fn dioxus_tui::launch_cfg">launch_cfg</a></div></li><li><div class="item-name"><a class="fn" href="fn.launch_cfg_with_props.html" title="fn dioxus_tui::launch_cfg_with_props">launch_cfg_with_props</a></div></li><li><div class="item-name"><a class="fn" href="fn.launch_vdom_cfg.html" title="fn dioxus_tui::launch_vdom_cfg">launch_vdom_cfg</a></div></li></ul></section></div></main></body></html>

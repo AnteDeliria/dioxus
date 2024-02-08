@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["pre_render","render","render_element"],"mod":["config","eval","renderer","template"]};

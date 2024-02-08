@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["NodeType","OwnedAttributeValue"],"struct":["ElementNode","OwnedAttributeDiscription","OwnedAttributeView","TextNode"],"trait":["FromAnyValue"]};

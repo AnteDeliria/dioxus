@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Tool"],"fn":["app_path","clone_repo","extract_zip","temp_path","tools_path"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["SLEDGEHAMMER_JS"],"fn":["get_node","hydrate","initialize","run_from_buffer","save_template"],"mod":["binary_protocol","minimal_bindings"],"static":["COMMON_JS","INTERPRETER_JS"],"struct":["Channel","MutationState"]};

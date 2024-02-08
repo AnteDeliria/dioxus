@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build","build_desktop","gen_page"],"struct":["BuildResult"],"trait":["ExecWithRustFlagsSetter"]};

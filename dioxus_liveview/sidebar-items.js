@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["LiveViewError"],"fn":["axum_socket","interpreter_glue"],"mod":["axum_adapter","launch","pool"],"struct":["Config"],"trait":["LiveviewRouter","WebsocketRx","WebsocketTx"]};
