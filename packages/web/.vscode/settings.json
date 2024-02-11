@@ -1,3 +1,13 @@
 {
-    "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
+    //"rust-analyzer.cargo.target": "wasm32-unknown-unknown",
+    //"rust-analyzer.cargo.extraArgs": ["--package=dioxus-web"]
+    "rust-analyzer.cargo.buildScripts.overrideCommand": [
+        "cargo",
+        "check",
+        "--quiet",
+        "--message-format=json",
+        "--target=wasm32-unknown-unknown",
+        "--features=hot_reload"
+    ]
+    //"cargo check --quiet --workspace --message-format=json --all-targets"
 }

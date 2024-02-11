@@ -60,7 +60,7 @@ use std::rc::Rc;
 pub use crate::cfg::Config;
 #[cfg(feature = "file_engine")]
 pub use crate::file_engine::WebFileEngineExt;
-use dioxus_core::VirtualDom;
+use dioxus_core::{prelude::spawn_forever, VirtualDom};
 use futures_util::{
     future::{select, Either},
     pin_mut, FutureExt, StreamExt,
@@ -116,8 +116,33 @@ pub async fn run(virtual_dom: VirtualDom, web_config: Config) {
         console_error_panic_hook::set_once();
     }
 
+    // Hot reload
     #[cfg(all(feature = "hot_reload", debug_assertions))]
-    let mut hotreload_rx = hot_reload::init();
+    let mut hotreload_rx;
+
+    #[cfg(all(feature = "hot_reload", debug_assertions))]
+    {
+        // Get websocket url
+        let window = web_sys::window().unwrap();
+        let protocol = match window.location().protocol().unwrap() {
+            prot if prot == "https:" => "wss:",
+            _ => "ws:",
+        };
+        let url = format!(
+            "{protocol}//{}/_dioxus/hot_reload",
+            window.location().host().unwrap()
+        );
+
+        use dioxus_std::conn_manager::*;
+
+        let conn = websocket::WebsocketClient::connect(&url);
+        let mut mgr = Manager::new();
+
+        let hot_reload_channel = mgr.channel("hot_reload");
+
+        hotreload_rx = hot_reload::init(hot_reload_channel);
+        spawn_forever(mgr.listen(conn));
+    }
 
     let (tx, mut rx) = futures_channel::mpsc::unbounded();
 

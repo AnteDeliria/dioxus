@@ -16,6 +16,7 @@ dioxus-interpreter-js = { workspace = true, features = [
     "minimal_bindings",
     "webonly",
 ] }
+dioxus-std = { path = "../../../dioxus-std/std", optional = true }
 generational-box = { workspace = true }
 
 js-sys = "0.3.56"
@@ -66,6 +67,7 @@ hot_reload = [
     "web-sys/MessageEvent",
     "web-sys/WebSocket",
     "web-sys/Location",
+    "dioxus-std/conn_mgr_ws"
 ]
 eval = [
     "dioxus-html/eval",

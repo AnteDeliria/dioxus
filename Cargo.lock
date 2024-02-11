@@ -2918,6 +2918,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-std"
+version = "0.4.2"
+dependencies = [
+ "cfg-if",
+ "futures",
+ "futures-util",
+ "js-sys",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "dioxus-tailwind"
 version = "0.0.0"
 dependencies = [
@@ -2954,6 +2968,7 @@ dependencies = [
  "dioxus-html",
  "dioxus-interpreter-js",
  "dioxus-ssr",
+ "dioxus-std",
  "dioxus-web",
  "futures-channel",
  "futures-util",
