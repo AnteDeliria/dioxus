@@ -135,7 +135,7 @@ pub async fn run(virtual_dom: VirtualDom, web_config: Config) {
 
         use dioxus_std::conn_manager::*;
 
-        let conn = websocket::WebsocketClient::connect(&url);
+        let conn = websocket::Client::connect(&url);
         let mut mgr = Manager::new();
 
         let hot_reload_channel = mgr.channel("hot_reload");

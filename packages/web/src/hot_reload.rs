@@ -4,6 +4,8 @@ use futures_channel::mpsc::UnboundedReceiver;
 use dioxus_core::{prelude::spawn_forever, Template};
 
 pub(crate) fn init(mut channel: ConnectionChannel) -> UnboundedReceiver<Template> {
+    use serde::Deserialize;
+
     let (tx, rx) = futures_channel::mpsc::unbounded();
 
     spawn_forever(async move {
