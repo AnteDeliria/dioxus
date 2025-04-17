@@ -1,6 +1,6 @@
 use dioxus_core::prelude::Callback;
 use rustc_hash::FxHashMap;
-use std::{cell::RefCell, rc::Rc};
+use std::{rc::Rc, sync::Mutex};
 use wry::{http::Request, RequestAsyncResponder};
 
 /// A request for an asset within dioxus-desktop.
@@ -12,7 +12,7 @@ pub struct AssetHandler {
 
 #[derive(Clone)]
 pub struct AssetHandlerRegistry {
-    handlers: Rc<RefCell<FxHashMap<String, AssetHandler>>>,
+    handlers: Rc<Mutex<FxHashMap<String, AssetHandler>>>,
 }
 
 impl AssetHandlerRegistry {
@@ -23,7 +23,7 @@ impl AssetHandlerRegistry {
     }
 
     pub fn has_handler(&self, name: &str) -> bool {
-        self.handlers.borrow().contains_key(name)
+        self.handlers.lock().unwrap().contains_key(name)
     }
 
     pub fn handle_request(
@@ -32,7 +32,7 @@ impl AssetHandlerRegistry {
         request: AssetRequest,
         responder: RequestAsyncResponder,
     ) {
-        if let Some(handler) = self.handlers.borrow().get(name) {
+        if let Some(handler) = self.handlers.lock().unwrap().get(name) {
             // And run the handler in the scope of the component that created it
             handler.f.call((request, responder));
         }
@@ -43,10 +43,13 @@ impl AssetHandlerRegistry {
         name: String,
         f: Callback<(AssetRequest, RequestAsyncResponder)>,
     ) {
-        self.handlers.borrow_mut().insert(name, AssetHandler { f });
+        self.handlers
+            .lock()
+            .unwrap()
+            .insert(name, AssetHandler { f });
     }
 
     pub fn remove_handler(&self, name: &str) -> Option<AssetHandler> {
-        self.handlers.borrow_mut().remove(name)
+        self.handlers.lock().unwrap().remove(name)
     }
 }
